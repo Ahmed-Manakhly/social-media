@@ -20,7 +20,7 @@
     }
     /* to declare variables */
     
-     :root {
+    *:root {
         --primary-color-hue: 252;
         --dark-color-lightness: 17%;
         --light-color-lightness: 93%;

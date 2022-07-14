@@ -14,7 +14,7 @@ menuItems.forEach((item) => {
             document.querySelector("#notification .notification-count").style.display = "none";
         } else {
             document.querySelector(".notification-popup").style.display = "none";
-        }
+        };
     })
 });
 
@@ -195,4 +195,59 @@ bg1.addEventListener('click', () => {
     bg3.classList.remove('active');
     bg2.classList.remove('active');
     window.location.reload();
+});
+
+// ============================================
+const newPost = document.getElementById('create-post');
+const btn = document.querySelector('.newpost');
+const feeds = document.querySelector('.feeds');
+btn.onclick = () => {
+    return false;
+}
+btn.addEventListener(('click'), () => {
+    let postText = newPost.value
+    let container = document.createElement('div');
+    container.classList.add('feed')
+    container.innerHTML = `<div class="head">
+        <div class="user">
+            <div class="profile-photo">
+                <img src="./images/profile-1.jpg" alt="">
+            </div>
+            <div class="info">
+                <h3>Noah Ahmed</h3>
+                <small class="text-muted">Giza, 1 sec ago</small>
+            </div>
+        </div>
+        <span class="edit"><i class="uil uil-ellipsis-h"></i></span>
+    </div>
+
+    <div class="photo">
+        <img src="" alt="">
+    </div>
+    <div><p>${postText}</p></div>
+    <div class="action-buttons">
+        <div class="interaction-buttons">
+            <span><i class="uil uil-heart-alt"></i></span>
+            <span><i class="uil uil-comment"></i></span>
+            <span><i class="uil uil-share-alt"></i></span>
+        </div>
+        <div class="bookmark">
+            <span><i class="uil uil-bookmark-full"></i></span>
+        </div>
+    </div>
+    <div class="liked-by">
+        <span></span>
+        <span></span>
+        <span>></span>
+        <p>Liked by<b>0</b></p>
+    </div>
+    <div class="caption">
+        <p><a class="hash-tag"></a></p>
+    </div>
+    <div class="comments text-muted">No comments yet</div> `;
+    feeds.prepend(container);
+    newPost.value = ""
+
+
+
 });
