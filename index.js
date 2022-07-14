@@ -253,28 +253,6 @@ btn.addEventListener(('click'), () => {
 });
 
 //=============================================== taps 
-//    .category {}
-
-// .primary {}
-
-// .general {}
-
-// .requests {}
-
-// .messages__taps {}
-
-// #primary {
-//     display: none;
-// }
-
-// #general {
-//     display: none;
-// }
-
-// #requests {
-//     display: flex;
-//     flex-direction: column;
-// }
 const categories = Array.from(document.querySelectorAll('.category h6'));
 const taps = Array.from(document.querySelectorAll('.messages__taps .tap'));
 categories.forEach((ele) => {
