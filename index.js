@@ -251,3 +251,53 @@ btn.addEventListener(('click'), () => {
 
 
 });
+
+//=============================================== taps 
+//    .category {}
+
+// .primary {}
+
+// .general {}
+
+// .requests {}
+
+// .messages__taps {}
+
+// #primary {
+//     display: none;
+// }
+
+// #general {
+//     display: none;
+// }
+
+// #requests {
+//     display: flex;
+//     flex-direction: column;
+// }
+const categories = Array.from(document.querySelectorAll('.category h6'));
+const taps = Array.from(document.querySelectorAll('.messages__taps .tap'));
+categories.forEach((ele) => {
+    ele.addEventListener(('click'), (e) => {
+        taps.forEach((tap) => {
+            if (ele.classList.contains(tap.id)) {
+                tap.style.display = "flex";
+                tap.style.flexDirection = "column"
+            } else {
+                tap.style.display = "none";
+            }
+        });
+        categories.forEach((ele) => {
+            ele.classList.remove('active');
+        });
+        e.target.classList.add('active');
+    });
+});
+
+let reqBtn = Array.from(document.querySelectorAll('.request .action .btn'));
+
+reqBtn.forEach((ele) => {
+    ele.addEventListener(('click'), (e) => {
+        e.target.parentElement.style.display = "none";
+    })
+})
