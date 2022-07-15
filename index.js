@@ -1,57 +1,8 @@
 //deal with the sidebar
 
-//the notification pop up showing
-const menuItems = document.querySelectorAll(".menu-item");
-
-menuItems.forEach((item) => {
-    item.addEventListener("click", () => {
-        menuItems.forEach((item) => {
-            item.classList.remove("active");
-        })
-        item.classList.add("active");
-        if (item.id === "notification") {
-            document.querySelector(".notification-popup").style.display = "block";
-            document.querySelector("#notification .notification-count").style.display = "none";
-        } else {
-            document.querySelector(".notification-popup").style.display = "none";
-        };
-    })
-});
-
-// the messages showing
-const msNotification = document.querySelector("#messages-notifications");
-const msBox = document.querySelector(".messages");
-const message = msBox.querySelectorAll(".message");
-const msSearch = document.querySelector("#message-search");
 
 
-
-
-
-msNotification.addEventListener("click", () => {
-    msBox.style.boxShadow = '0 0 1rem var(--color-primary)';
-    document.querySelector("#messages-notifications .notification-count").style.display = "none";
-    let handle = setTimeout(() => {
-        msBox.style.boxShadow = 'none';
-    }, 2000);
-})
-
-
-const searchMs = function() {
-
-    const val = msSearch.value.toLowerCase();
-    message.forEach(chat => {
-        let name = chat.querySelector('.message-body h5').textContent.toLowerCase();
-        if (name.indexOf(val) != -1) {
-            chat.style.display = "flex";
-        } else {
-            chat.style.display = "none";
-        }
-    })
-}
-msSearch.addEventListener('keyup', searchMs);
-
-// themes ===================================================
+// ================================================= themes ===================================================
 
 const theme = document.querySelector('#theme');
 const themeModel = document.querySelector('.customize-theme');
@@ -74,7 +25,7 @@ themeModel.addEventListener('click', closeTheModel);
 
 const fontSizes = document.querySelectorAll('.choose-size span');
 var root = document.querySelector(':root');
-// font
+//================================================================== font
 //remove active 
 
 const removeSizeActive = () => {
@@ -118,7 +69,7 @@ fontSizes.forEach(size => {
     });
 });
 
-// color
+//======================================================== color
 
 const removeColorActive = () => {
     colorPalette.forEach(color => {
@@ -152,7 +103,7 @@ colorPalette.forEach(color => {
 })
 
 
-// changing bg
+// ========================================== changing bg
 
 const bg1 = document.querySelector('.bg-1');
 const bg2 = document.querySelector('.bg-2');
@@ -191,13 +142,177 @@ bg3.addEventListener('click', () => {
 });
 // ___________--bg1
 bg1.addEventListener('click', () => {
+    darkColorLightness = '17%';
+    whiteColorLightness = '100%';
+    lightColorLightness = '93%';
+
     bg1.classList.add('active');
     bg3.classList.remove('active');
     bg2.classList.remove('active');
-    window.location.reload();
+    changeBG();
+});
+//====================================================================end of themes
+
+
+
+//======================================the notification pop up & messages showing and active any item on the side bar
+
+const menuItems = document.querySelectorAll(".menu-item");
+let msPopup = document.querySelector('.right').cloneNode(true);
+msPopup.classList.add('cloned')
+let popupCard = document.querySelector('.customize-theme .card ');
+
+
+
+menuItems.forEach((item) => {
+    // active class for all
+    item.addEventListener("click", () => {
+        //remove
+        menuItems.forEach((item) => {
+            item.classList.remove("active");
+        });
+        //add
+        item.classList.add("active");
+        //notification pop up & messages showing
+        if (item.id === "notification") {
+            document.querySelector(".notification-popup").style.display = "block";
+            //remove counter
+            document.querySelector("#notification .notification-count").style.display = "none";
+        } else {
+            document.querySelector(".notification-popup").style.display = "none";
+        };
+        if (item.id === "messages-notifications") {
+            //clone pop from themes to be for messages
+            popupCard.style.display = "none";
+            themeModel.appendChild(msPopup);
+            //applying the same functionality on the cloned messages pop up ele to left side from the right side
+            msopen(msPopup);
+            msPopup.style.display = "block";
+            msPopup.style.boxShadow = "0 0 3rem var(--color-primary)";
+            msPopup.style.borderRadius = "var(--card-border-radius)";
+            msPopup.style.textAlign = "left";
+            //declared before with themes
+            openTheModel();
+            //remove counter
+            document.querySelector("#messages-notifications .notification-count").style.display = "none";
+        } else {
+            popupCard.style.display = "block";
+            msPopup.style.display = "none";
+        };
+    });
 });
 
-// ============================================
+//============================================================= taps of messages right side
+const categories = Array.from(document.querySelectorAll('.category h6'));
+const taps = Array.from(document.querySelectorAll('.messages__taps .tap'));
+categories.forEach((ele) => {
+    ele.addEventListener(('click'), (e) => {
+        taps.forEach((tap) => {
+            if (ele.classList.contains(tap.id)) {
+                tap.style.display = "flex";
+                tap.style.flexDirection = "column"
+            } else {
+                tap.style.display = "none";
+            };
+        });
+        categories.forEach((ele) => {
+            ele.classList.remove('active');
+        });
+        e.target.classList.add('active');
+    });
+});
+
+let reqBtn = Array.from(document.querySelectorAll('.request .action .btn'));
+
+reqBtn.forEach((ele) => {
+    ele.addEventListener(('click'), (e) => {
+        e.target.parentElement.style.display = "none";
+    });
+});
+
+// ==================================================================== end taps of messages right side
+
+// ================================================================ search messages right side
+
+const msBox = document.querySelector(".messages");
+const message = msBox.querySelectorAll(".message");
+const msSearch = document.querySelector("#message-search");
+
+const searchMs = function() {
+
+    const val = msSearch.value.toLowerCase();
+    message.forEach(chat => {
+        let name = chat.querySelector('.message-body h5').textContent.toLowerCase();
+        if (name.indexOf(val) != -1) {
+            chat.style.display = "flex";
+        } else {
+            chat.style.display = "none";
+        };
+    });
+};
+msSearch.addEventListener('keyup', searchMs);
+
+//====================================================================== end search messages right side
+
+//================================================================applying the same functionality on the cloned messages pop up ele to left side in one function
+
+
+let msopen = (ele) => {
+    if (ele.classList.contains('cloned')) {
+        //=============================================== taps of messages
+
+        let categories2 = Array.from(document.querySelectorAll('.category h6'));
+        let taps2 = Array.from(document.querySelectorAll('.messages__taps .tap'));
+        categories2.forEach((ele) => {
+            ele.addEventListener(('click'), (e) => {
+                taps2.forEach((tap) => {
+                    if (ele.classList.contains(tap.id)) {
+                        tap.style.display = "flex";
+                        tap.style.flexDirection = "column"
+                    } else {
+                        tap.style.display = "none";
+                    }
+                });
+                categories2.forEach((ele) => {
+                    ele.classList.remove('active');
+                });
+                e.target.classList.add('active');
+            });
+        });
+
+        let reqBtn2 = Array.from(document.querySelectorAll('.request .action .btn'));
+
+        reqBtn2.forEach((ele2) => {
+                ele2.addEventListener(('click'), (e) => {
+                    e.target.parentElement.style.display = "none";
+                })
+            })
+            //==============================remove friend-requests
+        let friendRequests = document.querySelector('.cloned .friend-requests');
+        friendRequests.style.display = "none";
+        // ============================== search messages
+        let msBox2 = document.querySelector(".cloned .messages");
+        let message2 = msBox2.querySelectorAll(".message");
+        let msSearch2 = document.querySelector(".cloned #message-search");
+        let searchMs2 = function() {
+
+            let val2 = msSearch2.value.toLowerCase();
+            message2.forEach(chat => {
+                let name = chat.querySelector('.message-body h5').textContent.toLowerCase();
+                if (name.indexOf(val2) != -1) {
+                    chat.style.display = "flex";
+                } else {
+                    chat.style.display = "none";
+                }
+            })
+        }
+        msSearch2.addEventListener('keyup', searchMs2);
+    }
+}
+
+//================================================================  end applying the same functionality on the cloned ele
+
+// ============================================ ===================================== post
 const newPost = document.getElementById('create-post');
 const btn = document.querySelector('.newpost');
 const feeds = document.querySelector('.feeds');
@@ -207,7 +322,9 @@ btn.onclick = () => {
 btn.addEventListener(('click'), () => {
     let postText = newPost.value
     let container = document.createElement('div');
-    container.classList.add('feed')
+    container.classList.add('feed');
+    container.classList.add('new-post');
+    //put the same structure of feed markup
     container.innerHTML = `<div class="head">
         <div class="user">
             <div class="profile-photo">
@@ -247,35 +364,201 @@ btn.addEventListener(('click'), () => {
     <div class="comments text-muted">No comments yet</div> `;
     feeds.prepend(container);
     newPost.value = ""
-
-
-
+    newPostShare(container);
+    newPostComment(container);
 });
+//=============================================================================== end of post
+//=============================================================================== Share
 
-//=============================================== taps 
-const categories = Array.from(document.querySelectorAll('.category h6'));
-const taps = Array.from(document.querySelectorAll('.messages__taps .tap'));
-categories.forEach((ele) => {
-    ele.addEventListener(('click'), (e) => {
-        taps.forEach((tap) => {
-            if (ele.classList.contains(tap.id)) {
-                tap.style.display = "flex";
-                tap.style.flexDirection = "column"
-            } else {
-                tap.style.display = "none";
-            }
-        });
-        categories.forEach((ele) => {
-            ele.classList.remove('active');
-        });
-        e.target.classList.add('active');
+let sharBtn = document.querySelectorAll('.uil-share-alt');
+sharBtn.forEach((ele) => {
+    ele.addEventListener(('click'), () => {
+        let postText = ele.parentElement.parentElement.parentElement.parentElement.cloneNode(true);
+        let container = document.createElement('div');
+        container.classList.add('feed');
+        container.classList.add('new-post');
+        //put the same structure of feed markup
+        let buttons = postText.querySelector('.action-buttons')
+        buttons.style.display = "none";
+        container.innerHTML = `<div class="head">
+        <div class="user">
+            <div class="profile-photo">
+                <img src="./images/profile-1.jpg" alt="">
+            </div>
+            <div class="info">
+                <h3>Noah Ahmed</h3>
+                <small class="text-muted">Giza, 1 sec ago</small>
+            </div>
+        </div>
+        <span class="edit"><i class="uil uil-ellipsis-h"></i></span>
+    </div>
+
+    <div class="photo">
+        <img src="" alt="">
+    </div>
+    <div><p>${postText.innerHTML}</p></div>
+    <div class="action-buttons">
+        <div class="interaction-buttons">
+            <span><i class="uil uil-heart-alt"></i></span>
+            <span><i class="uil uil-comment"></i></span>
+            <span><i class="uil uil-share-alt"></i></span>
+        </div>
+        <div class="bookmark">
+            <span><i class="uil uil-bookmark-full"></i></span>
+        </div>
+    </div>
+    <div class="liked-by">
+        <span></span>
+        <span></span>
+        <span>></span>
+        <p>Liked by<b>0</b></p>
+    </div>
+    <div class="caption">
+        <p><a class="hash-tag"></a></p>
+    </div>
+    <div class="comments text-muted">No comments yet</div> `;
+        feeds.prepend(container);
+        newPostShare(container);
+        newPostComment(container);
     });
 });
+//=============================================================================== end of Share
+//================================================================================share for new posts
 
-let reqBtn = Array.from(document.querySelectorAll('.request .action .btn'));
+let newPostShare = (ele) => {
+    if (ele.classList.contains('new-post')) {
+        let feeds2 = document.querySelector('.feeds');
+        let sharBtn2 = document.querySelectorAll('.new-post .uil-share-alt:last-child');
+        sharBtn2.forEach((ele) => {
+            ele.addEventListener(('click'), () => {
+                let postText = ele.parentElement.parentElement.parentElement.parentElement.cloneNode(true);
+                let container = document.createElement('div');
+                container.classList.add('feed');
+                container.classList.add('new-post');
+                //put the same structure of feed markup
+                let buttons2 = postText.querySelectorAll('.action-buttons')
+                buttons2.forEach((ele) => {
+                    ele.style.display = "none";
+                });
+                container.innerHTML = `<div class="head">
+                    <div class="user">
+                    <div class="profile-photo">
+                        <img src="./images/profile-1.jpg" alt="">
+                    </div>
+                    <div class="info">
+                        <h3>Noah Ahmed</h3>
+                        <small class="text-muted">Giza, 1 sec ago</small>
+                    </div>
+                    </div>
+                    <span class="edit"><i class="uil uil-ellipsis-h"></i></span>
+                        </div>
+                    <div class="photo">
+                        <img src="" alt="">
+                    </div>
+                    <div><p>${postText.innerHTML}</p></div>
+                    <div class="action-buttons">
+                        <div class="interaction-buttons">
+                            <span><i class="uil uil-heart-alt"></i></span>
+                            <span><i class="uil uil-comment"></i></span>
+                            <span><i class="uil uil-share-alt"></i></span>
+                        </div>
+                        <div class="bookmark">
+                            <span><i class="uil uil-bookmark-full"></i></span>
+                        </div>
+                    </div>
+                    <div class="liked-by">
+                        <span></span>
+                        <span></span>
+                        <span>></span>
+                        <p>Liked by<b>0</b></p>
+                    </div>
+                    <div class="caption">
+                        <p><a class="hash-tag"></a></p>
+                    </div>
+                    <div class="comments text-muted">No comments yet</div> `;
 
-reqBtn.forEach((ele) => {
-    ele.addEventListener(('click'), (e) => {
-        e.target.parentElement.style.display = "none";
-    })
-})
+                feeds2.prepend(container);
+                newPostShare(container);
+                newPostComment(container);
+            });
+        });
+    };
+};
+//================================================================================end of share for new posts
+// ================================================== ===========================comment
+
+let commentBtn = document.querySelectorAll('.uil-comment');
+commentBtn.forEach((ele) => {
+    ele.addEventListener(('click'), () => {
+        let myPro = document.querySelector(".left .profile");
+        let comment = document.createElement('div');
+        comment.setAttribute('contenteditable', "true");
+
+        let submitBtn = document.createElement('button');
+        submitBtn.appendChild(document.createTextNode("send"))
+        submitBtn.classList.add('btn-primary');
+        submitBtn.classList.add('btn');
+
+        submitBtn.onclick = () => {
+            comment.blur();
+            comment.style.textAlign = "center"
+            comment.setAttribute('contenteditable', "false");
+            comment.style.backgroundColor = "var(--color-light)";
+            comment.appendChild(myPro);
+            submitBtn.style.display = "none";
+        };
+        comment.style.height = "5rem";
+        comment.style.backgroundColor = "var(--color-white)"
+        comment.style.border = "0.2rem solid var(--color-light)"
+        comment.style.color = "var(--color-dark)"
+        comment.style.borderRadius = "1.5rem"
+        comment.style.padding = "0.7rem"
+        let container = document.createElement('div');
+        container.style.display.cssText = "display:flex ; align-items: center; justify-content: space-evenly;"
+
+        container.appendChild(comment);
+        container.appendChild(submitBtn);
+        ele.parentElement.parentElement.parentElement.parentElement.append(container);
+        comment.focus();
+    });
+});
+// ==============================================================end comment
+//=============================================================== comment on new posts
+let newPostComment = (ele) => {
+    if (ele.classList.contains('new-post')) {
+        let commentBtn2 = document.querySelectorAll('.new-post .uil-comment');
+        commentBtn2.forEach((ele) => {
+            ele.addEventListener(('click'), () => {
+                let myPro = document.querySelector(".left .profile");
+                let comment = document.createElement('div');
+                comment.setAttribute('contenteditable', "true");
+
+                let submitBtn = document.createElement('button');
+                submitBtn.appendChild(document.createTextNode("send"))
+                submitBtn.classList.add('btn-primary');
+                submitBtn.classList.add('btn');
+
+                submitBtn.onclick = () => {
+                    comment.blur();
+                    comment.style.textAlign = "center"
+                    comment.setAttribute('contenteditable', "false");
+                    comment.style.backgroundColor = "white";
+                    submitBtn.style.display = "none";
+                    comment.appendChild(myPro);
+                };
+                comment.style.height = "5rem";
+                comment.style.backgroundColor = "var(--color-light)"
+                comment.style.color = "var(--color-dark)"
+                comment.style.borderRadius = "1.5rem"
+                comment.style.padding = "0.7rem"
+                let container = document.createElement('div');
+                container.style.display.cssText = "display:flex ; align-items: center; justify-content: space-evenly;"
+
+                container.appendChild(comment);
+                container.appendChild(submitBtn);
+                ele.parentElement.parentElement.parentElement.parentElement.append(container);
+                comment.focus();
+            });
+        });
+    };
+};

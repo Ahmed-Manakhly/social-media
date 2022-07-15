@@ -42,7 +42,7 @@
         --search-padding: 0.6rem 1rem;
         --card-padding: 1rem;
         /* _________________- */
-        --sticky-top-left: 5.4rem;
+        --sticky-top-left: -2rem;
         --sticky-top-right: -18rem;
     }
     /* INCLUDING GOOGLEFONTS */
@@ -568,10 +568,18 @@
     .category h6 {
         cursor: pointer;
     }
+    
+    #general {
+        display: none;
+    }
+    
+    #requests {
+        display: none;
+    }
     /* ==================================== themes =========================== */
     
     .customize-theme {
-        background-color: rgb(255, 255, 255, 0.5);
+        background-color: rgb(255, 255, 255, 0.85);
         width: 100vw;
         height: 100vh;
         position: fixed;
@@ -590,7 +598,7 @@
         padding: 3rem;
         border-radius: var(--card-border-radius);
         width: 50%;
-        box-shadow: 0 0 1rem var(--color-primary)
+        box-shadow: 0 0 3rem var(--color-primary)
     }
     /* font size */
     
