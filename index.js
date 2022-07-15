@@ -87,7 +87,7 @@ colorPalette.forEach(color => {
         color.classList.toggle('active');
 
         if (color.classList.contains('color-1')) {
-            primaryHue = 525;
+            primaryHue = 252;
         } else if (color.classList.contains('color-2')) {
             primaryHue = 52;
         } else if (color.classList.contains('color-3')) {
